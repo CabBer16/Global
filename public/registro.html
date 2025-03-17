@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Registro</h1>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <section class="formulario-registro">
+                <h2>Crear una cuenta</h2>
+                <form id="formRegistro">
+                    <div class="form-group">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" id="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="correo">Correo electrónico:</label>
+                        <input type="email" id="correo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contrasena">Contraseña:</label>
+                        <input type="password" id="contrasena" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmar-contrasena">Confirmar contraseña:</label>
+                        <input type="password" id="confirmar-contrasena" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Registrarse</button>
+                </form>
+                <p id="mensajeRegistro"></p>
+                <p>¿Ya tienes una cuenta? <a href="index.html">Inicia sesión aquí</a>.</p>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Instrumentos Global. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

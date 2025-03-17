@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kessoku Band Club - Inicio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1>Kessoku Band Club</h1>
+            <nav>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="productos_cliente.html">Instrumentos</a></li>
+                    <li id="auth-link"><a href="index.html">Login</a></li> <!-- Enlace dinámico -->
+                    <li><a href="#nosotros">Nosotros</a></li>
+                    <li><a href="#ubicacion">Ubicación</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Botón flotante de Contacto -->
+        <div id="contacto-flotante" class="contacto-flotante">
+            <button id="boton-contacto" class="btn-contacto">Contacto</button>
+            <div id="info-contacto" class="info-contacto">
+                <h3>Contacto</h3>
+                <p><strong>Teléfono:</strong> <a href="tel:3338301832">3338301832</a></p>
+                <p><strong>Correo:</strong> <a href="mailto:a23310408@ceti.mx">a23310408@ceti.mx</a></p>
+                <p><strong>Soporte:</strong> <a href="mailto:soporte@kessokubandclub.com">soporte@kessokubandclub.com</a></p>
+            </div>
+        </div>
+
+    <!-- Sección de Inicio -->
+    <section id="inicio" class="hero">
+        <div class="container">
+            <h2>Bienvenido a Kessoku Band Club</h2>
+            <p>Tu destino para encontrar los mejores instrumentos musicales y accesorios.</p>
+            <a href="productos_cliente.html" class="btn-primary">Explorar Instrumentos</a>
+        </div>
+    </section>
+
+    <!-- Sección de Misión y Visión -->
+    <section id="nosotros" class="about">
+        <div class="container">
+            <h2>Nosotros</h2>
+            <div class="about-grid">
+                <div class="about-card">
+                    <h3>Misión</h3>
+                    <p>Ofrecer instrumentos musicales de alta calidad para músicos de todos los niveles, inspirando la creatividad y la pasión por la música.</p>
+                </div>
+                <div class="about-card">
+                    <h3>Visión</h3>
+                    <p>Ser la tienda líder en venta de instrumentos musicales, reconocida por nuestro compromiso con la excelencia y la comunidad musical.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Instrumentos -->
+    <section id="instrumentos" class="products">
+        <div class="container">
+            <h2>Instrumentos</h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <img src="guitar.jpg" alt="Guitarra">
+                    <h3>Guitarras</h3>
+                    <p>Explora nuestra colección de guitarras acústicas y eléctricas.</p>
+                    <a href="productos_cliente.html" class="btn-primary">Ver más</a>
+                </div>
+                <div class="product-card">
+                    <img src="bass.jpg" alt="Bajo">
+                    <h3>Bajos</h3>
+                    <p>Encuentra el bajo perfecto para tu banda.</p>
+                    <a href="productos_cliente.html" class="btn-primary">Ver más</a>
+                </div>
+                <div class="product-card">
+                    <img src="drums.jpg" alt="Batería">
+                    <h3>Baterías</h3>
+                    <p>Baterías profesionales para todos los estilos.</p>
+                    <a href="productos_cliente.html" class="btn-primary">Ver más</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- Sección de Ubicación -->
+<section id="ubicacion" class="location">
+    <div class="container">
+        <h2>Ubicación</h2>
+        <p>Visítanos en CETI Colomos:</p>
+        <div class="map">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3733.383684714064!2d-103.3914326845917!3d20.65387248620885!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8428ae4e98d5453d%3A0xc4fdd3929a2ecbd1!2sCETI%20Plantel%20Colomos!5e0!3m2!1ses!2smx!4v1699999999999!5m2!1ses!2smx"
+                width="100%"
+                height="400"
+                style="border:0;"
+                allowfullscreen=""
+                loading="lazy">
+            </iframe>
+        </div>
+    </div>
+</section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Kessoku Band Club. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="home.js"></script>
+</body>
+</html>

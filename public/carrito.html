@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- SDK de PayPal -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AVLP7dJaz1YWBKLh-gSxWYNe6fc5T6sElkd3bXM6fuFj6iQhc0bFUlYVIZ2F-yGnFH2hLvUZnOqwuDyh&currency=MXN"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Instrumentos Global</h1>
+            <nav>
+                <ul>
+                    <li><a href="home.html">Inicio</a></li>
+                    <li><a href="productos_cliente.html">Productos</a></li>
+                    <li><a href="carrito.html">Carrito (<span id="iconoCarrito">0</span>)</a></li>
+                    <li><a href="index.html">Cerrar sesión</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <section class="carrito">
+                <h2>Carrito de Compras</h2>
+                <div id="listaCarrito" class="carrito-grid">
+                    <!-- Aquí se mostrarán los productos del carrito -->
+                </div>
+                <div class="resumen-carrito">
+                    <h3>Resumen de la Compra</h3>
+                    <p><strong>Total:</strong> $<span id="totalCarrito">0.00</span></p>
+                    <div class="opciones-pago">
+                        <button id="pagoPDF" class="btn-primary">Pagar y Recibir PDF</button>
+                        <!-- Botón para abrir PayPal -->
+                        <button id="abrirPayPal" class="btn-paypal">Pagar con PayPal</button>
+                        <!-- Contenedor para el botón de PayPal (oculto inicialmente) -->
+                        <div id="paypal-button-container" style="display: none;"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Kessoku Band. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="carrito.js"></script>
+</body>
+</html>

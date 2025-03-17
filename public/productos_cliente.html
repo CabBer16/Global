@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos Disponibles</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Instrumentos Global</h1>
+            <nav>
+                <ul>
+                    <li><a href="home.html">Inicio</a></li>
+                    <li><a href="productos_cliente.html">Productos</a></li>
+                    <!-- Mostrar carrito solo si el usuario está logueado -->
+                    <li id="carritoLink" style="display: none;"><a href="carrito.html">Carrito <span id="iconoCarrito">0</span></a></li>
+                    <!-- Mostrar iniciar sesión solo si el usuario no está logueado -->
+                    <li id="loginLink"><a href="index.html">Iniciar sesión</a></li>
+                    <!-- Mostrar cerrar sesión solo si el usuario está logueado -->
+                    <li id="logoutLink" style="display: none;"><a href="#" onclick="cerrarSesion()">Cerrar sesión</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <!-- Buscador y Filtros -->
+            <section class="filtros">
+                <input type="text" id="buscador" placeholder="Buscar productos..." class="buscador">
+                <div class="filtros-categorias">
+                    <button class="filtro-btn active" data-categoria="todos">Todos</button>
+                    <button class="filtro-btn" data-categoria="guitarra">Guitarras</button>
+                    <button class="filtro-btn" data-categoria="bajo">Bajos</button>
+                    <button class="filtro-btn" data-categoria="bateria">Baterías</button>
+                    <button class="filtro-btn" data-categoria="ukulele">Ukuleles</button>
+                    <button class="filtro-btn" data-categoria="microfono">Micrófonos</button>
+                </div>
+            </section>
+
+            <!-- Lista de Productos -->
+            <section class="productos">
+                <h2>Productos Disponibles</h2>
+                <div id="listaProductos" class="product-grid">
+                    <!-- Los productos se cargarán aquí dinámicamente -->
+                </div>
+            </section>
+
+            <!-- Modal para detalles del producto -->
+            <div id="modalProducto" class="modal">
+                <div class="modal-contenido">
+                    <span class="cerrar-modal">&times;</span>
+                    <div id="modalContenido"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Instrumentos Global. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="productos_clientes.js"></script>
+</body>
+</html>
