@@ -3,21 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bitácora</title>
+    <title>Bitácora - Adopta un Amigo</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <header class="header">
         <div class="container">
-            <h1>Instrumentos Global</h1>
+            <h1>🐾 Adopta un Amigo 🐾</h1>
             <nav>
                 <ul>
                     <li><a href="home_admin.html">Inicio</a></li>
-                    <li><a href="gestion_usuarios.html">Gestión de Usuarios</a></li>
-                    <li><a href="productos_admin.html">Gestión de Productos</a></li>
-                    <li><a href="bitacora.html">Bitácora</a></li>
-                    <li><a href="index.html">Cerrar sesión</a></li>
+                    <li><a href="gestion_usuarios.html">Usuarios</a></li>
+                    <li><a href="productos_admin.html">Productos</a></li>
                 </ul>
             </nav>
         </div>
@@ -25,52 +23,29 @@
 
     <main class="main">
         <div class="container">
-            <div class="bitacora-container">
-                <h2>Bitácora de Actividades</h2>
-                <div class="table-container">
-                    <table id="tabla-bitacora">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Usuario</th>
-                                <th>Tabla Afectada</th>
-                                <th>Acción</th>
-                                <th>Fecha</th>
-                                <th>Sentencia</th>
-                                <th>Contrasentencia</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Ejemplo de datos -->
-                            <tr>
-                                <td>1</td>
-                                <td>admin</td>
-                                <td>usuarios</td>
-                                <td>INSERT</td>
-                                <td>2023-10-01 12:34:56</td>
-                                <td>INSERT INTO usuarios...</td>
-                                <td>DELETE FROM usuarios...</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>user1</td>
-                                <td>productos</td>
-                                <td>UPDATE</td>
-                                <td>2023-10-02 14:22:10</td>
-                                <td>UPDATE productos...</td>
-                                <td>UPDATE productos...</td>
-                            </tr>
-                            <!-- Los registros de la bitácora se cargarán aquí -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <h2>Bitácora de Actividades</h2>
+            <table id="tabla-bitacora">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Usuario</th>
+                        <th>Tabla</th>
+                        <th>Acción</th>
+                        <th>Fecha</th>
+                        <th>Sentencia</th>
+                        <th>Contrasentencia</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Los registros se cargarán dinámicamente -->
+                </tbody>
+            </table>
         </div>
     </main>
 
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 Instrumentos Global. Todos los derechos reservados.</p>
+            <p>&copy; 2025 Adopta un Amigo. Todos los derechos reservados. 🐾</p>
         </div>
     </footer>
 

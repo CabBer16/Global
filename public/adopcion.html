@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adopción - Adopta un Amigo</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .pet-card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px;
+            display: inline-block;
+            text-align: center;
+            width: 200px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .pet-card img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+        .pet-card button {
+            margin-top: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .pet-card button:hover {
+            background-color: #0056b3;
+        }
+        .pet-card.adopted {
+            background-color: #d3d3d3;
+            color: #888;
+        }
+        .pet-card.adopted button {
+            background-color: #888;
+            cursor: not-allowed;
+        }
+        .pets-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">🐾 Adopta un Amigo</h1>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="home.html" class="nav-link"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li><a href="productos_cliente.html" class="nav-link"><i class="fas fa-shopping-bag"></i> Productos</a></li>
+                    <li><a href="adopcion.html" class="nav-link"><i class="fas fa-paw"></i> Adopción</a></li>
+                    <li id="auth-link"><a href="index.html" class="nav-link"><i class="fas fa-user"></i> Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <section class="adoption-section">
+                <h2>Encuentra a tu Compañero Ideal</h2>
+                <p>Explora las mascotas disponibles para adopción y encuentra a tu nuevo mejor amigo.</p>
+                <div id="pets-container" class="pets-container"></div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Adopta un Amigo. Todos los derechos reservados. 🐾</p>
+        </div>
+    </footer>
+
+    <script>
+        // Fetch adoptable pets from the server
+        fetch('/api/mascotas')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('pets-container');
+                data.forEach(pet => {
+                    const petCard = document.createElement('div');
+                    petCard.className = `pet-card ${pet.estado === 'Adoptada' ? 'adopted' : ''}`;
+                    petCard.innerHTML = `
+                        <img src="${pet.ImagenBase64}" alt="${pet.nombre}">
+                        <h3>${pet.nombre}</h3>
+                        <p><strong>Especie:</strong> ${pet.especie}</p>
+                        <p><strong>Raza:</strong> ${pet.raza || 'N/A'}</p>
+                        <p><strong>Edad:</strong> ${pet.edad || 'N/A'} años</p>
+                        <p>${pet.descripcion}</p>
+                        <button ${pet.estado === 'Adoptada' ? 'disabled' : ''}>
+                            ${pet.estado === 'Adoptada' ? 'Adoptado' : 'Adoptar'}
+                        </button>
+                    `;
+                    if (pet.estado !== 'Adoptada') {
+                        petCard.querySelector('button').addEventListener('click', () => adoptPet(pet.id, petCard));
+                    }
+                    container.appendChild(petCard);
+                });
+            });
+
+        // Handle adoption with SweetAlert confirmation
+        function adoptPet(petId, petCard) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¿Quieres adoptar esta mascota?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, adoptar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/api/adoptar', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ mascota_id: petId, usuario_id: 1 }) // Replace 1 with the logged-in user's ID
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.mensaje) {
+                            Swal.fire('¡Adoptado!', data.mensaje, 'success');
+                            petCard.classList.add('adopted');
+                            const button = petCard.querySelector('button');
+                            button.textContent = 'Adoptado';
+                            button.disabled = true;
+                        } else {
+                            Swal.fire('Error', data.error, 'error');
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+</html>

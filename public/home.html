@@ -3,22 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kessoku Band Club - Inicio</title>
+    <title>Bienvenido a Adopta un Amigo</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <!-- Header -->
     <header class="header">
         <div class="container">
-            <h1>Kessoku Band Club</h1>
-            <nav>
-                <ul>
-                    <li><a href="#inicio">Inicio</a></li>
-                    <li><a href="productos_cliente.html">Instrumentos</a></li>
-                    <li id="auth-link"><a href="index.html">Login</a></li> <!-- Enlace dinámico -->
-                    <li><a href="#nosotros">Nosotros</a></li>
-                    <li><a href="#ubicacion">Ubicación</a></li>
+            <h1 class="logo">🐾 Adopta un Amigo</h1>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="#inicio" class="nav-link"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li><a href="productos_cliente.html" class="nav-link"><i class="fas fa-shopping-bag"></i> Productos</a></li>
+                    <li><a href="adopcion.html" class="nav-link"><i class="fas fa-paw"></i> Adopción</a></li>
+                    <li><a href="#nosotros" class="nav-link"><i class="fas fa-info-circle"></i> Nosotros</a></li>
+                    <li id="auth-link"><a href="index.html" class="nav-link"><i class="fas fa-user"></i> Login</a></li>
                 </ul>
             </nav>
         </div>
@@ -35,54 +36,79 @@
             </div>
         </div>
 
-    <!-- Sección de Inicio -->
+    <!-- Hero Section -->
     <section id="inicio" class="hero">
-        <div class="container">
-            <h2>Bienvenido a Kessoku Band Club</h2>
-            <p>Tu destino para encontrar los mejores instrumentos musicales y accesorios.</p>
-            <a href="productos_cliente.html" class="btn-primary">Explorar Instrumentos</a>
+        <div class="hero-content">
+            <h2><span style="color: #ff6f61; font-weight: bold;">Encuentra a tu Compañero Ideal</span></h2>
+            <p><span style="color: #333; font-size: 1.2rem;">Adopta una mascota o descubre productos para consentir a tus amigos peludos.</span></p>
+            <a href="adopcion.html" class="btn-primary">¡Adoptar Ahora!</a>
         </div>
     </section>
 
-    <!-- Sección de Misión y Visión -->
-    <section id="nosotros" class="about">
-        <div class="container">
-            <h2>Nosotros</h2>
-            <div class="about-grid">
-                <div class="about-card">
-                    <h3>Misión</h3>
-                    <p>Ofrecer instrumentos musicales de alta calidad para músicos de todos los niveles, inspirando la creatividad y la pasión por la música.</p>
+    <!-- About Section -->
+<section id="nosotros" class="about">
+    <div class="container">
+        <h2 class="section-title">Sobre Nosotros</h2>
+        <div class="about-grid">
+            <!-- Misión -->
+            <div class="about-card">
+                <h3>🐶 Nuestra Misión</h3>
+                <div class="about-content">
+                    <p>En <strong>Adopta un Amigo</strong>, nos dedicamos a promover la adopción responsable y el bienestar de las mascotas. Creemos que cada animal merece un hogar lleno de amor y cuidado, y trabajamos incansablemente para conectar a las mascotas con familias comprometidas.</p>
+                    <p>Además, ofrecemos productos de alta calidad para garantizar que tus amigos peludos tengan una vida saludable y feliz. Nuestro objetivo es ser un referente en el cuidado animal, brindando educación y recursos para fomentar una convivencia armoniosa entre humanos y mascotas.</p>
                 </div>
-                <div class="about-card">
-                    <h3>Visión</h3>
-                    <p>Ser la tienda líder en venta de instrumentos musicales, reconocida por nuestro compromiso con la excelencia y la comunidad musical.</p>
+            </div>
+            <!-- Visión -->
+            <div class="about-card">
+                <h3>🐾 Nuestra Visión</h3>
+                <div class="about-content">
+                    <p>En <strong>Adopta un Amigo</strong>, aspiramos a ser el principal centro de adopción y tienda de productos para mascotas en la región. Queremos ser reconocidos por nuestro compromiso con el bienestar animal y por ofrecer un servicio integral que cubra todas las necesidades de las mascotas y sus dueños.</p>
+                    <p>Nuestra visión incluye expandirnos a nivel nacional, creando una red de refugios y tiendas que promuevan la adopción y el cuidado responsable. Buscamos ser un modelo a seguir en la industria, inspirando a otras organizaciones a unirse a nuestra causa.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Featured Products Section -->
+    <section id="productos" class="products">
+        <div class="container">
+            <h2 class="section-title">Productos Destacados</h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <img src="images/juguetes.jpg" alt="Juguetes para mascotas" class="product-image">
+                    <h3>Juguetes</h3>
+                    <p>Diviértete con tus mascotas con nuestra selección de juguetes.</p>
+                    <a href="productos_cliente.html" class="btn-primary">Ver más</a>
+                </div>
+                <div class="product-card">
+                    <img src="images/alimentos.jpg" alt="Alimentos para mascotas" class="product-image">
+                    <h3>Alimentos</h3>
+                    <p>Nutrición balanceada para tus amigos peludos.</p>
+                    <a href="productos_cliente.html" class="btn-primary">Ver más</a>
+                </div>
+                <div class="product-card">
+                    <img src="images/accesorios.jpg" alt="Accesorios para mascotas" class="product-image">
+                    <h3>Accesorios</h3>
+                    <p>Encuentra collares, camas y más para consentir a tus mascotas.</p>
+                    <a href="productos_cliente.html" class="btn-primary">Ver más</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Sección de Instrumentos -->
-    <section id="instrumentos" class="products">
+    <!-- Testimonials Section -->
+    <section id="testimonios" class="testimonials">
         <div class="container">
-            <h2>Instrumentos</h2>
-            <div class="product-grid">
-                <div class="product-card">
-                    <img src="guitar.jpg" alt="Guitarra">
-                    <h3>Guitarras</h3>
-                    <p>Explora nuestra colección de guitarras acústicas y eléctricas.</p>
-                    <a href="productos_cliente.html" class="btn-primary">Ver más</a>
+            <h2 class="section-title">Lo que dicen nuestros clientes</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p>"Gracias a Adopta un Amigo, encontré los mejores productos para mi perro. ¡Lo recomiendo mucho!"</p>
+                    <h4>- Ana López</h4>
                 </div>
-                <div class="product-card">
-                    <img src="bass.jpg" alt="Bajo">
-                    <h3>Bajos</h3>
-                    <p>Encuentra el bajo perfecto para tu banda.</p>
-                    <a href="productos_cliente.html" class="btn-primary">Ver más</a>
-                </div>
-                <div class="product-card">
-                    <img src="drums.jpg" alt="Batería">
-                    <h3>Baterías</h3>
-                    <p>Baterías profesionales para todos los estilos.</p>
-                    <a href="productos_cliente.html" class="btn-primary">Ver más</a>
+                <div class="testimonial-card">
+                    <p>"Adopté un gato a través de su plataforma y fue una experiencia increíble. ¡Gracias!"</p>
+                    <h4>- Carlos Martínez</h4>
                 </div>
             </div>
         </div>
@@ -91,7 +117,7 @@
 <!-- Sección de Ubicación -->
 <section id="ubicacion" class="location">
     <div class="container">
-        <h2>Ubicación</h2>
+        <h2>📍 Nuestra Ubicación</h2>
         <p>Visítanos en CETI Colomos:</p>
         <div class="map">
             <iframe
@@ -109,10 +135,107 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 Kessoku Band Club. Todos los derechos reservados.</p>
+            <p>&copy; 2025 🐾 Adopta un Amigo. Todos los derechos reservados.</p>
+            <p>Síguenos en nuestras redes sociales:</p>
+            <div class="social-icons">
+                <a href="#" class="social-link"><i class="fab fa-facebook"></i> Facebook</a>
+                <a href="#" class="social-link"><i class="fab fa-instagram"></i> Instagram</a>
+                <a href="#" class="social-link"><i class="fab fa-twitter"></i> Twitter</a>
+            </div>
         </div>
     </footer>
 
-    <script src="home.js"></script>
+<script>
+    function toggleExpand(card) {
+        const content = card.querySelector('.about-content');
+        card.classList.toggle('expanded');
+        if (card.classList.contains('expanded')) {
+            content.style.maxHeight = content.scrollHeight + "px";
+        } else {
+            content.style.maxHeight = "0";
+        }
+    }
+</script>
+
+<style>
+    /* Estilos para la expansión interactiva */
+    .about {
+    padding: 60px 0;
+    background-color: #f9f9f9;
+}
+
+.about-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.about-card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.about-card h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.about-content p {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.about-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* Estilos para el menú de navegación */
+.nav {
+    background-color: #ff6f61;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav-list {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #ffe0d9;
+    transform: scale(1.1);
+}
+
+.nav-link i {
+    font-size: 1.2rem;
+}
+</style>
 </body>
 </html>

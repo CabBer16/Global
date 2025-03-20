@@ -3,37 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
+    <title>Registro - Adopta un Amigo</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <header class="header">
         <div class="container">
-            <h1>Registro</h1>
+            <h1>🐾 Adopta un Amigo 🐾</h1>
+            <nav>
+                <ul>
+                    <li><a href="home.html">Inicio</a></li>
+                    <li><a href="productos_cliente.html">Productos</a></li>
+                    <li><a href="adopcion.html">Adopción</a></li>
+                    <li><a href="index.html">Login</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
     <main class="main">
         <div class="container">
             <section class="formulario-registro">
-                <h2>Crear una cuenta</h2>
+                <h2>Regístrate para Adoptar o Comprar Productos</h2>
                 <form id="formRegistro">
                     <div class="form-group">
                         <label for="nombre">Nombre:</label>
-                        <input type="text" id="nombre" required>
+                        <input type="text" id="nombre" placeholder="Ingresa tu nombre" required>
                     </div>
                     <div class="form-group">
-                        <label for="correo">Correo electrónico:</label>
-                        <input type="email" id="correo" required>
+                        <label for="correo">Correo Electrónico:</label>
+                        <input type="email" id="correo" placeholder="Ingresa tu correo" required>
                     </div>
                     <div class="form-group">
                         <label for="contrasena">Contraseña:</label>
-                        <input type="password" id="contrasena" required>
+                        <input type="password" id="contrasena" placeholder="Crea una contraseña" required>
                     </div>
                     <div class="form-group">
-                        <label for="confirmar-contrasena">Confirmar contraseña:</label>
-                        <input type="password" id="confirmar-contrasena" required>
+                        <label for="confirmar-contrasena">Confirmar Contraseña:</label>
+                        <input type="password" id="confirmar-contrasena" placeholder="Confirma tu contraseña" required>
                     </div>
                     <button type="submit" class="btn-primary">Registrarse</button>
                 </form>
@@ -45,7 +53,7 @@
 
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 Instrumentos Global. Todos los derechos reservados.</p>
+            <p>&copy; 2025 Adopta un Amigo. Todos los derechos reservados. 🐾</p>
         </div>
     </footer>
 

@@ -3,47 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Productos Disponibles</title>
+    <title>Productos para Mascotas</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <header class="header">
         <div class="container">
-            <h1>Instrumentos Global</h1>
-            <nav>
-                <ul>
-                    <li><a href="home.html">Inicio</a></li>
-                    <li><a href="productos_cliente.html">Productos</a></li>
-                    <!-- Mostrar carrito solo si el usuario está logueado -->
-                    <li id="carritoLink" style="display: none;"><a href="carrito.html">Carrito <span id="iconoCarrito">0</span></a></li>
-                    <!-- Mostrar iniciar sesión solo si el usuario no está logueado -->
-                    <li id="loginLink"><a href="index.html">Iniciar sesión</a></li>
-                    <!-- Mostrar cerrar sesión solo si el usuario está logueado -->
-                    <li id="logoutLink" style="display: none;"><a href="#" onclick="cerrarSesion()">Cerrar sesión</a></li>
+            <h1 class="logo">🐾 PetCare Global</h1>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="home.html" class="nav-link"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li><a href="productos_cliente.html" class="nav-link"><i class="fas fa-shopping-bag"></i> Productos</a></li>
+                    <li id="carritoLink" style="display: none;"><a href="carrito.html" class="nav-link"><i class="fas fa-shopping-cart"></i> Carrito <span id="iconoCarrito">0</span></a></li>
+                    <li id="loginLink"><a href="index.html" class="nav-link"><i class="fas fa-user"></i> Iniciar sesión</a></li>
+                    <li id="logoutLink" style="display: none;"><a href="#" class="nav-link" onclick="cerrarSesion()"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
     <main class="main">
+        <div class="hero">
+            <div class="hero-content">
+                <h2>Encuentra lo mejor para tu mascota</h2>
+                <p>Productos de calidad para consentir a tus amigos peludos.</p>
+                <input type="text" id="buscador" placeholder="Buscar productos para tu mascota..." class="buscador">
+            </div>
+        </div>
+
         <div class="container">
-            <!-- Buscador y Filtros -->
-            <section class="filtros">
-                <input type="text" id="buscador" placeholder="Buscar productos..." class="buscador">
+            <!-- Categorías -->
+            <section class="categorias">
+                <h2 class="section-title">Sección de productos</h2>
                 <div class="filtros-categorias">
                     <button class="filtro-btn active" data-categoria="todos">Todos</button>
-                    <button class="filtro-btn" data-categoria="guitarra">Guitarras</button>
-                    <button class="filtro-btn" data-categoria="bajo">Bajos</button>
-                    <button class="filtro-btn" data-categoria="bateria">Baterías</button>
-                    <button class="filtro-btn" data-categoria="ukulele">Ukuleles</button>
-                    <button class="filtro-btn" data-categoria="microfono">Micrófonos</button>
+                    <button class="filtro-btn" data-categoria="limpieza">🐶 Limpieza</button>
+                    <button class="filtro-btn" data-categoria="cepillos">🐱 Cepillos</button>
+                    <button class="filtro-btn" data-categoria="alimento">🐦 Alimento</button>
+                    <button class="filtro-btn" data-categoria="accesorios"> Accesorios</button>
                 </div>
             </section>
 
             <!-- Lista de Productos -->
             <section class="productos">
-                <h2>Productos Disponibles</h2>
+                <h2 class="section-title">Productos para Mascotas</h2>
                 <div id="listaProductos" class="product-grid">
                     <!-- Los productos se cargarán aquí dinámicamente -->
                 </div>
@@ -61,7 +65,13 @@
 
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 Instrumentos Global. Todos los derechos reservados.</p>
+            <p>&copy; 2025 🐾 PetCare Global. Todos los derechos reservados.</p>
+            <p>Síguenos en nuestras redes sociales:</p>
+            <div class="social-icons">
+                <a href="#" class="social-link">🐾 Facebook</a>
+                <a href="#" class="social-link">🐾 Instagram</a>
+                <a href="#" class="social-link">🐾 Twitter</a>
+            </div>
         </div>
     </footer>
 

@@ -21,7 +21,7 @@ if (authLink) {
                 localStorage.removeItem('isLoggedIn'); // Eliminar el estado de autenticación
                 localStorage.removeItem('token'); // Eliminar el token
                 localStorage.removeItem('usuario'); // Eliminar el usuario
-                window.location.href = 'index.html'; // Redirigir al login
+                window.location.href = 'home.html'; // Redirigir al login
             });
         } else {
             console.error('No se encontró el enlace de cierre de sesión'); // Depuración

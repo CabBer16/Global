@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Mascotas</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Gestión de Mascotas</h1>
+            <nav>
+                <ul>
+                    <li><a href="home_admin.html">Inicio</a></li>
+                    <li><a href="adopcion_admin.html" class="active">Adopción</a></li>
+                    <li><a href="gestion_usuarios.html">Usuarios</a></li>
+                    <li><a href="productos_admin.html">Productos</a></li>
+                    <li><a href="#" onclick="cerrarSesion()">Cerrar sesión</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="grid-layout">
+                <!-- Sección para agregar mascota -->
+                <section class="formulario-mascota card">
+                    <h2>Agregar Mascota</h2>
+                    <form id="mascotaForm">
+                        <input type="hidden" id="mascotaId">
+                        <div class="form-group">
+                            <label for="nombre">Nombre:</label>
+                            <input type="text" id="nombre" placeholder="Nombre de la mascota" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="especie">Especie:</label>
+                            <input type="text" id="especie" placeholder="Especie de la mascota" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="raza">Raza:</label>
+                            <input type="text" id="raza" placeholder="Raza de la mascota" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edad">Edad:</label>
+                            <input type="number" id="edad" placeholder="Edad de la mascota" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="descripcion">Descripción:</label>
+                            <textarea id="descripcion" placeholder="Descripción de la mascota" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="imagen">Imagen:</label>
+                            <input type="file" id="imagen" accept="image/*" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Guardar Mascota</button>
+                    </form>
+                </section>
+
+                <!-- Sección para listar mascotas -->
+                <section class="lista-mascotas card">
+                    <h2>Lista de Mascotas</h2>
+                    <div class="table-container">
+                        <table id="mascotasTable" class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>Imagen</th>
+                                    <th>Nombre</th>
+                                    <th>Especie</th>
+                                    <th>Raza</th>
+                                    <th>Edad</th>
+                                    <th>Descripción</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Aquí se llenará la tabla con JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Sección para listar mascotas adoptadas -->
+                <section class="lista-mascotas-adoptadas card">
+                    <h2>Mascotas Adoptadas</h2>
+                    <div class="table-container">
+                        <table id="mascotasAdoptadasTable" class="styled-table">
+                            <thead>
+                                <tr>
+                                    <th>Imagen</th>
+                                    <th>Nombre</th>
+                                    <th>Especie</th>
+                                    <th>Raza</th>
+                                    <th>Edad</th>
+                                    <th>Descripción</th>
+                                    <th>Adoptado Por</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Aquí se llenará la tabla con JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2023 Adopta Pets. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('mascotaForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('mascotaId').value;
+            const nombre = document.getElementById('nombre').value;
+            const especie = document.getElementById('especie').value;
+            const raza = document.getElementById('raza').value;
+            const edad = document.getElementById('edad').value;
+            const descripcion = document.getElementById('descripcion').value;
+            const imagenInput = document.getElementById('imagen');
+            let imagenBase64 = '';
+
+            if (imagenInput.files.length > 0) {
+                const file = imagenInput.files[0];
+                const reader = new FileReader();
+                await new Promise((resolve) => {
+                    reader.onload = () => {
+                        imagenBase64 = reader.result;
+                        resolve();
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            const method = id ? 'PUT' : 'POST';
+            const url = id ? `/api/mascotas/${id}` : '/api/mascotas';
+
+            await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nombre, especie, raza, edad, descripcion, imagen: imagenBase64 })
+            });
+
+            document.getElementById('mascotaForm').reset();
+            loadMascotas();
+        });
+
+        async function loadMascotas() {
+            const response = await fetch('/api/mascotas');
+            const mascotas = await response.json();
+            const tbody = document.querySelector('#mascotasTable tbody');
+            tbody.innerHTML = '';
+            mascotas.forEach(mascota => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><img src="${mascota.ImagenBase64}" alt="${mascota.nombre}" style="width: 100px; height: auto;"></td>
+                    <td>${mascota.nombre}</td>
+                    <td>${mascota.especie}</td>
+                    <td>${mascota.raza}</td>
+                    <td>${mascota.edad}</td>
+                    <td>${mascota.descripcion}</td>
+                    <td>
+                        <button class="btn-secondary" onclick="editMascota(${mascota.id})">Editar</button>
+                        <button class="btn-danger" onclick="deleteMascota(${mascota.id})">Eliminar</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function loadMascotasAdoptadas() {
+            const response = await fetch('/api/mascotas/adoptadas');
+            const mascotas = await response.json();
+            const tbody = document.querySelector('#mascotasAdoptadasTable tbody');
+            tbody.innerHTML = '';
+            mascotas.forEach(mascota => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><img src="${mascota.ImagenBase64}" alt="${mascota.nombre}" style="width: 100px; height: auto;"></td>
+                    <td>${mascota.nombre}</td>
+                    <td>${mascota.especie}</td>
+                    <td>${mascota.raza}</td>
+                    <td>${mascota.edad}</td>
+                    <td>${mascota.descripcion}</td>
+                    <td>${mascota.adoptado_por}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function editMascota(id) {
+            fetch(`/api/mascotas/${id}`)
+                .then(response => response.json())
+                .then(mascota => {
+                    document.getElementById('mascotaId').value = mascota.id;
+                    document.getElementById('nombre').value = mascota.nombre;
+                    document.getElementById('especie').value = mascota.especie;
+                    document.getElementById('raza').value = mascota.raza;
+                    document.getElementById('edad').value = mascota.edad;
+                    document.getElementById('descripcion').value = mascota.descripcion;
+                    document.getElementById('imagen').value = ''; // Clear the file input
+                });
+        }
+
+        async function deleteMascota(id) {
+            await fetch(`/api/mascotas/${id}`, { method: 'DELETE' });
+            loadMascotas();
+        }
+
+        function cerrarSesion() {
+            localStorage.removeItem('usuario');
+            window.location.href = 'index.html';
+        }
+
+        // Load both available and adopted pets
+        loadMascotas();
+        loadMascotasAdoptadas();
+    </script>
+</body>
+</html>
+

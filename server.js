@@ -11,7 +11,7 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root', 
     password: '', 
-    database: 'instrumentos_bd'
+    database: 'adopta_pets'
 });
 
 db.connect(err => {
@@ -29,12 +29,10 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'caitkiramman606@gmail.com', 
-        pass: 'dkav lhfg onuy yijv' 
+        user: 'a23310409@ceti.mx', 
+        pass: 'mmkb guzk mqjz vsvb' 
     }
 });
-
-// const { client } = require('./public/paypal');
 
 const jwt = require('jsonwebtoken');
 const secretKey = 'usertoken';
@@ -63,20 +61,19 @@ function obtenerUsuarioNombre(req) {
     const authHeader = req.headers['authorization'];
     if (!authHeader) {
         console.error('No se proporcionó el encabezado de autorización');
-        return null; // Si no hay token, no hay usuario
+        return null; 
     }
 
-    const token = authHeader.split(' ')[1]; // Extrae solo el token
+    const token = authHeader.split(' ')[1]; 
     try {
         const decoded = jwt.verify(token, secretKey);
-        return decoded.nombre; // Retorna el nombre del usuario autenticado
+        return decoded.nombre; 
     } catch (error) {
         console.error('Error al verificar el token:', error);
         return null;
     }
 }
 
-// Registrar en la bitácora
 function registrarBitacora(usuarioNombre, tablaAfectada, accion, sentencia, contrasentencia) {
     const query = `
         INSERT INTO bitacora (usuario_nombre, tabla_afectada, accion, sentencia, contrasentencia)
@@ -112,6 +109,44 @@ if (req.url.startsWith('/api/')) {
 const server = http.createServer(async (req, res) => {
     const url = path.parse(req.url, true);
     const pathname = url.pathname;
+
+   /* const filePath = path.join(__dirname, 'public', req.url);
+
+    fs.readFile(filePath, (err, data) => {
+        if (err) {
+            res.writeHead(404, { 'Content-Type': 'text/plain' });
+            res.end('Archivo no encontrado');
+        } else {
+            const ext = path.extname(filePath).toLowerCase();
+            let contentType = 'text/plain';
+
+            // Configura el tipo MIME según la extensión del archivo
+            switch (ext) {
+                case '.jpg':
+                case '.jpeg':
+                    contentType = 'image/jpeg';
+                    break;
+                case '.png':
+                    contentType = 'image/png';
+                    break;
+                case '.gif':
+                    contentType = 'image/gif';
+                    break;
+                case '.css':
+                    contentType = 'text/css';
+                    break;
+                case '.js':
+                    contentType = 'application/javascript';
+                    break;
+                case '.html':
+                    contentType = 'text/html';
+                    break;
+            }
+
+            res.writeHead(200, { 'Content-Type': contentType });
+            res.end(data);
+        }
+    });*/
 
     if (pathname === '/' || pathname === '/home.html') {
         fs.readFile('./public/home.html', (err, data) => {
@@ -224,6 +259,30 @@ const server = http.createServer(async (req, res) => {
         });
     }
 
+    else if (pathname === "/adopcion.html") {
+        fs.readFile('./public/adopcion.html', (err, data) => {
+            if (err) {
+                res.writeHead(500, { 'Content-Type': 'text/plain' });
+                res.end('Error al cargar la página del cliente');
+            } else {
+                res.writeHead(200, { 'Content-Type': 'text/html' });
+                res.end(data);
+            }
+        });
+    }
+
+    else if (pathname === "/adopcion_admin.html") {
+        fs.readFile('./public/adopcion_admin.html', (err, data) => {
+            if (err) {
+                res.writeHead(500, { 'Content-Type': 'text/plain' });
+                res.end('Error al cargar la página del cliente');
+            } else {
+                res.writeHead(200, { 'Content-Type': 'text/html' });
+                res.end(data);
+            }
+        });
+    }
+
                                                                                              
     //Api para registrar
     else if (pathname === '/api/registro' && req.method === 'POST') {
@@ -249,7 +308,6 @@ const server = http.createServer(async (req, res) => {
                     return res.end(JSON.stringify({ error: 'El correo no es válido' }));
                 }
     
-                // Verificar si el correo ya está registrado
                 const queryVerificar = 'SELECT id FROM usuarios WHERE correo = ?';
                 db.query(queryVerificar, [correo], async (err, resultados) => {
                     if (err) {
@@ -262,10 +320,8 @@ const server = http.createServer(async (req, res) => {
                         return res.end(JSON.stringify({ error: 'El correo ya está registrado' }));
                     }
     
-                    // Hashear la contraseña
                     const contrasenaHash = await bcrypt.hash(contrasena, 10);
     
-                    // Insertar usuario en la base de datos
                     const queryInsertar = 'INSERT INTO usuarios (nombre, correo, contrasena) VALUES (?, ?, ?)';
                     db.query(queryInsertar, [nombre, correo, contrasenaHash], (err, result) => {
                         if (err) {
@@ -296,13 +352,11 @@ const server = http.createServer(async (req, res) => {
             try {
                 const { correo, contrasena } = JSON.parse(body);
     
-                // Validar datos
                 if (!correo || !contrasena) {
                     res.writeHead(400, { 'Content-Type': 'application/json' });
                     return res.end(JSON.stringify({ error: 'Correo y contraseña son obligatorios' }));
                 }
     
-                // Buscar usuario en la base de datos
                 const query = `
                     SELECT usuarios.id, usuarios.nombre, usuarios.correo, usuarios.contrasena, roles.rol 
                     FROM usuarios 
@@ -323,18 +377,16 @@ const server = http.createServer(async (req, res) => {
     
                     const usuario = results[0];
     
-                    // Verificar contraseña
                     const contrasenaValida = await bcrypt.compare(contrasena, usuario.contrasena);
                     if (!contrasenaValida) {
                         res.writeHead(401, { 'Content-Type': 'application/json' });
                         return res.end(JSON.stringify({ error: 'Contraseña incorrecta' }));
                     }
     
-                    // Generar token JWT
                     const token = jwt.sign(
                         { usuario_id: usuario.id, correo: usuario.correo, rol: usuario.rol }, 
                         secretKey, 
-                        { expiresIn: '2h' } // Expira en 2 horas
+                        { expiresIn: '2h' } 
                     );
     
                     res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -466,22 +518,20 @@ const server = http.createServer(async (req, res) => {
             try {
                 const { nombre, correo, contrasena, rol_id } = JSON.parse(body);
     
-                // Verifica que todos los campos obligatorios estén presentes
                 if (!nombre || !correo || !contrasena || !rol_id) {
                     res.writeHead(400, { 'Content-Type': 'application/json' });
                     return res.end(JSON.stringify({ error: 'Todos los campos son obligatorios' }));
                 }
     
-                console.log('Datos recibidos:', { nombre, correo, contrasena, rol_id }); // Depuración
+                console.log('Datos recibidos:', { nombre, correo, contrasena, rol_id }); 
     
-                // Hashear la contraseña con bcrypt
-                const saltRounds = 10; // Número de rondas para generar el salt
-                const contrasenaHash = await bcrypt.hash(contrasena, saltRounds); // Hashear la contraseña
-                console.log('Contraseña hash:', contrasenaHash); // Depuración: Verifica el hash
+                const saltRounds = 10; 
+                const contrasenaHash = await bcrypt.hash(contrasena, saltRounds); 
+                console.log('Contraseña hash:', contrasenaHash); 
     
                 const query = 'INSERT INTO usuarios (nombre, correo, contrasena, rol_id) VALUES (?, ?, ?, ?)';
-                console.log('Query:', query); // Depuración: Verifica la consulta SQL
-                console.log('Valores:', [nombre, correo, contrasenaHash, rol_id]); // Depuración: Verifica los valores
+                console.log('Query:', query); 
+                console.log('Valores:', [nombre, correo, contrasenaHash, rol_id]); 
     
                 db.query(query, [nombre, correo, contrasenaHash, rol_id], (err, result) => {
                     if (err) {
@@ -489,7 +539,7 @@ const server = http.createServer(async (req, res) => {
                         res.writeHead(500, { 'Content-Type': 'application/json' });
                         res.end(JSON.stringify({ error: 'Error al agregar usuario', detalles: err.message }));
                     } else {
-                        console.log('Usuario agregado correctamente:', result); // Depuración
+                        console.log('Usuario agregado correctamente:', result); 
                         res.writeHead(201, { 'Content-Type': 'application/json' });
                         res.end(JSON.stringify({ mensaje: 'Usuario agregado exitosamente' }));
                     }
@@ -518,12 +568,10 @@ else if (pathname === '/api/usuarios' && req.method === 'PUT') {
 
             let contrasenaHash = null;
             if (contrasena) {
-                // Hashear la nueva contraseña si se proporciona
                 const salt = await bcrypt.genSalt(10);
                 contrasenaHash = await bcrypt.hash(contrasena, salt);
             }
 
-            // Construir la consulta SQL dinámicamente
             let query = 'UPDATE usuarios SET nombre = ?, correo = ?, rol_id = ?';
             const params = [nombre, correo, rol_id];
 
@@ -593,7 +641,7 @@ else if (pathname === '/api/usuarios' && req.method === 'DELETE') {
 
     else if (pathname === '/api/usuario/correo' && req.method === 'GET') {
         const url = new URL(req.url, `http://${req.headers.host}`);
-        const usuarioId = url.searchParams.get('usuarioId'); // Obtener el usuarioId desde los query parameters
+        const usuarioId = url.searchParams.get('usuarioId'); 
     
         if (!usuarioId) {
             res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -740,7 +788,6 @@ else if (pathname === '/api/usuarios' && req.method === 'DELETE') {
                 let query = 'UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, stock = ?, tipo_instrumento =? WHERE id = ?';
                 let values = [nombre, descripcion, precio, stock, tipo_instrumento, id];
     
-                // Solo actualizar la imagen si el usuario la envía
                 if (imagen) {
                     query = 'UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, stock = ?, imagen = ?, tipo_instrumento WHERE id = ?';
                     values = [nombre, descripcion, precio, stock, imagen, tipo_instrumento, id];
@@ -931,7 +978,7 @@ else if (pathname.startsWith('/api/carrito/') && req.method === 'DELETE') {
 
     else if (pathname === '/api/carrito/cantidad' && req.method === 'GET') {
         const url = new URL(req.url, `http://${req.headers.host}`);
-        const usuarioId = url.searchParams.get('usuarioId'); // Obtener el usuarioId desde los query parameters
+        const usuarioId = url.searchParams.get('usuarioId'); 
     
         if (!usuarioId) {
             res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -967,7 +1014,6 @@ else if (pathname.startsWith('/api/carrito/') && req.method === 'DELETE') {
                     return res.end(JSON.stringify({ error: 'Datos incompletos' }));
                 }
     
-                // Obtener los productos del carrito
                 const queryCarrito = `
                     SELECT p.id, p.nombre, p.precio, c.cantidad
                     FROM carrito c
@@ -985,11 +1031,9 @@ else if (pathname.startsWith('/api/carrito/') && req.method === 'DELETE') {
                         return res.end(JSON.stringify({ error: 'El carrito está vacío' }));
                     }
     
-                    // Calcular el total de la compra
                     const totalCompra = resultados.reduce((total, producto) => total + (producto.precio * producto.cantidad), 0);
     
-                    // Crear una nueva orden
-                    const ordenId = `ORDEN_${Date.now()}`; // Generar un ID único para la orden
+                    const ordenId = `ORDEN_${Date.now()}`; 
                     const queryOrden = `
                         INSERT INTO ordenes (id, usuario_id, total, fecha)
                         VALUES (?, ?, ?, NOW())`;
@@ -1000,7 +1044,6 @@ else if (pathname.startsWith('/api/carrito/') && req.method === 'DELETE') {
                             return res.end(JSON.stringify({ error: 'Error al crear la orden' }));
                         }
     
-                        // Insertar los detalles de la orden
                         let detallesInsertados = 0;
                         resultados.forEach(producto => {
                             const queryDetalles = `
@@ -1015,7 +1058,6 @@ else if (pathname.startsWith('/api/carrito/') && req.method === 'DELETE') {
     
                                 detallesInsertados++;
                                 if (detallesInsertados === resultados.length) {
-                                    // Registrar el pago
                                     const queryPago = `
                                         INSERT INTO pagos (orden_id, usuario_id, metodo, estado, fecha)
                                         VALUES (?, ?, 'PDF', 'Completado', NOW())`;
@@ -1026,7 +1068,6 @@ else if (pathname.startsWith('/api/carrito/') && req.method === 'DELETE') {
                                             return res.end(JSON.stringify({ error: 'Error al registrar el pago' }));
                                         }
     
-                                        // Generar el PDF y enviar el correo
                                         const doc = new PDFDocument({ margin: 50 });
                                         let buffers = [];
                                         doc.on('data', buffers.push.bind(buffers));
@@ -1036,9 +1077,9 @@ else if (pathname.startsWith('/api/carrito/') && req.method === 'DELETE') {
                                             const mailOptions = {
                                                 from: 'tucorreo@gmail.com',
                                                 to: correo,
-                                                subject: 'Detalles de tu compra',
-                                                text: 'Gracias por tu compra. Adjuntamos los detalles en PDF.',
-                                                attachments: [{ filename: 'compra.pdf', content: pdfBuffer }]
+                                                subject: 'Compra en AdoptaPet',
+                                                text: 'Detalles de tu compra en AdoptaPet, muchas gracias por su compra.',
+                                                attachments: [{ filename: 'adoptapet.pdf', content: pdfBuffer }]
                                             };
     
                                             transporter.sendMail(mailOptions, (error, info) => {
@@ -1048,7 +1089,6 @@ else if (pathname.startsWith('/api/carrito/') && req.method === 'DELETE') {
                                                     return res.end(JSON.stringify({ error: 'Error al enviar el correo' }));
                                                 }
     
-                                                // Vaciar el carrito del usuario
                                                 const deleteQuery = 'DELETE FROM carrito WHERE usuario_id = ?';
                                                 db.query(deleteQuery, [usuarioId], (err, result) => {
                                                     if (err) {
@@ -1063,31 +1103,32 @@ else if (pathname.startsWith('/api/carrito/') && req.method === 'DELETE') {
                                             });
                                         });
     
-                                        // Contenido del PDF
-                                        doc.fontSize(20).text('Kessoku Band Club', { align: 'center' });
+                                        doc.fontSize(24).text('AdoptaPet', { align: 'center', underline: true });
                                         doc.moveDown();
-                                        doc.fontSize(16).text('Resumen de Compra', { align: 'center' });
+                                        doc.fontSize(16).text('¡Gracias por tu compra!', { align: 'center' });
                                         doc.moveDown(2);
     
-                                        const startX = 50;
-                                        const startY = 150;
-                                        const columnWidths = [220, 80, 100, 100];
-                                        const rowHeight = 25;
-                                        const headerY = startY;
-    
-                                        doc.fontSize(12).font('Helvetica-Bold');
-                                        doc.text('Producto', startX, headerY, { width: columnWidths[0] });
-                                        doc.text('Cantidad', startX + columnWidths[0], headerY, { width: columnWidths[1], align: 'center' });
-                                        doc.text('Precio Unitario', startX + columnWidths[0] + columnWidths[1], headerY, { width: columnWidths[2], align: 'right' });
-                                        doc.text('Subtotal', startX + columnWidths[0] + columnWidths[1] + columnWidths[2], headerY, { width: columnWidths[3], align: 'right' });
+                                        doc.fontSize(14).text('Detalles:', { underline: true });
                                         doc.moveDown();
     
-                                        doc.moveTo(startX, headerY + rowHeight - 5)
-                                            .lineTo(startX + columnWidths.reduce((a, b) => a + b), headerY + rowHeight - 5)
+                                        const tableStartX = 50;
+                                        const tableStartY = 150;
+                                        const columnWidths = [200, 80, 100, 100];
+                                        const rowHeight = 25;
+    
+                                        doc.font('Helvetica-Bold');
+                                        doc.text('Producto', tableStartX, tableStartY, { width: columnWidths[0] });
+                                        doc.text('Cantidad', tableStartX + columnWidths[0], tableStartY, { width: columnWidths[1], align: 'center' });
+                                        doc.text('Precio', tableStartX + columnWidths[0] + columnWidths[1], tableStartY, { width: columnWidths[2], align: 'right' });
+                                        doc.text('Subtotal', tableStartX + columnWidths[0] + columnWidths[1] + columnWidths[2], tableStartY, { width: columnWidths[3], align: 'right' });
+                                        doc.moveDown();
+    
+                                        doc.moveTo(tableStartX, tableStartY + rowHeight - 5)
+                                            .lineTo(tableStartX + columnWidths.reduce((a, b) => a + b), tableStartY + rowHeight - 5)
                                             .stroke();
     
                                         doc.font('Helvetica');
-                                        let currentY = startY + rowHeight;
+                                        let currentY = tableStartY + rowHeight;
                                         let total = 0;
     
                                         resultados.forEach(producto => {
@@ -1095,32 +1136,24 @@ else if (pathname.startsWith('/api/carrito/') && req.method === 'DELETE') {
                                             const subtotal = precio * producto.cantidad;
                                             total += subtotal;
     
-                                            doc.text(producto.nombre, startX, currentY, { width: columnWidths[0], lineGap: 3 });
-                                            doc.text(producto.cantidad.toString(), startX + columnWidths[0], currentY, { width: columnWidths[1], align: 'center' });
-                                            doc.text(`$${precio.toFixed(2)}`, startX + columnWidths[0] + columnWidths[1], currentY, { width: columnWidths[2], align: 'right' });
-                                            doc.text(`$${subtotal.toFixed(2)}`, startX + columnWidths[0] + columnWidths[1] + columnWidths[2], currentY, { width: columnWidths[3], align: 'right' });
+                                            doc.text(producto.nombre, tableStartX, currentY, { width: columnWidths[0] });
+                                            doc.text(producto.cantidad.toString(), tableStartX + columnWidths[0], currentY, { width: columnWidths[1], align: 'center' });
+                                            doc.text(`$${precio.toFixed(2)}`, tableStartX + columnWidths[0] + columnWidths[1], currentY, { width: columnWidths[2], align: 'right' });
+                                            doc.text(`$${subtotal.toFixed(2)}`, tableStartX + columnWidths[0] + columnWidths[1] + columnWidths[2], currentY, { width: columnWidths[3], align: 'right' });
     
                                             currentY += rowHeight;
                                         });
     
-                                        doc.moveTo(startX, currentY + 5)
-                                            .lineTo(startX + columnWidths.reduce((a, b) => a + b), currentY + 5)
+                                        doc.moveTo(tableStartX, currentY + 5)
+                                            .lineTo(tableStartX + columnWidths.reduce((a, b) => a + b), currentY + 5)
                                             .stroke();
     
                                         doc.font('Helvetica-Bold');
-                                        doc.text('Total:', startX + columnWidths[0] + columnWidths[1] - 30, currentY + 10, { width: columnWidths[2], align: 'right' });
-                                        doc.text(`$${total.toFixed(2)}`, startX + columnWidths[0] + columnWidths[1] + columnWidths[2], currentY + 10, { width: columnWidths[3], align: 'right' });
+                                        doc.text('Total:', tableStartX + columnWidths[0] + columnWidths[1] - 30, currentY + 10, { width: columnWidths[2], align: 'right' });
+                                        doc.text(`$${total.toFixed(2)}`, tableStartX + columnWidths[0] + columnWidths[1] + columnWidths[2], currentY + 10, { width: columnWidths[3], align: 'right' });
     
                                         currentY += 50;
     
-                                        doc.moveDown(2);
-                                        doc.fontSize(12).font('Helvetica');
-                                        doc.text('Gracias por tu compra. Si necesitas soporte, contáctanos:', startX, currentY, { align: 'center', width: 500 });
-                                        doc.text('Email: soporte@kessokubandclub.com', startX, currentY + 20, { align: 'center', width: 500 });
-                                        doc.text('Teléfono: +52 3338301832', startX, currentY + 40, { align: 'center', width: 500 });
-                                        doc.text('Sitio web: www.kessokubandclub.com', startX, currentY + 60, { align: 'center', width: 500 });
-    
-                                        // Finalizar el PDF
                                         doc.end();
                                     });
                                 }
@@ -1150,7 +1183,6 @@ else if (pathname.startsWith('/api/carrito/') && req.method === 'DELETE') {
                     return res.end(JSON.stringify({ error: 'Datos incompletos' }));
                 }
     
-                // Obtener los productos del carrito
                 const queryCarrito = `
                     SELECT p.id, p.nombre, p.precio, c.cantidad
                     FROM carrito c
@@ -1168,8 +1200,7 @@ else if (pathname.startsWith('/api/carrito/') && req.method === 'DELETE') {
                         return res.end(JSON.stringify({ error: 'El carrito está vacío' }));
                     }
     
-                    // Crear una nueva orden
-                    const ordenId = `ORDEN_${Date.now()}`; // Generar un ID único para la orden
+                    const ordenId = `ORDEN_${Date.now()}`; 
                     const queryOrden = `
                         INSERT INTO ordenes (id, usuario_id, total, fecha)
                         VALUES (?, ?, ?, NOW())`;
@@ -1180,7 +1211,6 @@ else if (pathname.startsWith('/api/carrito/') && req.method === 'DELETE') {
                             return res.end(JSON.stringify({ error: 'Error al crear la orden' }));
                         }
     
-                        // Insertar los detalles de la orden
                         let detallesInsertados = 0;
                         resultados.forEach(producto => {
                             const queryDetalles = `
@@ -1195,7 +1225,6 @@ else if (pathname.startsWith('/api/carrito/') && req.method === 'DELETE') {
     
                                 detallesInsertados++;
                                 if (detallesInsertados === resultados.length) {
-                                    // Registrar el pago
                                     const queryPago = `
                                         INSERT INTO pagos (orden_id, usuario_id, metodo, estado, fecha)
                                         VALUES (?, ?, 'PAYPAL', 'Completado', NOW())`;
@@ -1206,7 +1235,6 @@ else if (pathname.startsWith('/api/carrito/') && req.method === 'DELETE') {
                                             return res.end(JSON.stringify({ error: 'Error al registrar el pago' }));
                                         }
     
-                                        // Vaciar el carrito del usuario
                                         const deleteQuery = 'DELETE FROM carrito WHERE usuario_id = ?';
                                         db.query(deleteQuery, [usuarioId], (err, result) => {
                                             if (err) {
@@ -1250,7 +1278,177 @@ else if (pathname.startsWith('/api/carrito/') && req.method === 'DELETE') {
         });
     }
 
+// Ruta para obtener mascotas adoptables
+else if (pathname === '/api/mascotas' && req.method === 'GET') {
+    const query = 'SELECT id, nombre, especie, raza, edad, descripcion, CAST(imagen AS CHAR) AS ImagenBase64 FROM mascotas WHERE estado = "Disponible"';
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Error en la consulta SQL:', err);
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            return res.end(JSON.stringify({ error: 'Error al obtener mascotas' }));
+        }
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(results));
+    });
+}
 
+// Ruta para adoptar una mascota
+else if (pathname === '/api/adoptar' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk.toString(); });
+    req.on('end', () => {
+        try {
+            const { usuario_id, mascota_id } = JSON.parse(body);
+
+            if (!usuario_id || !mascota_id) {
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                return res.end(JSON.stringify({ error: 'Todos los campos son obligatorios' }));
+            }
+
+            const queryAdoptar = 'INSERT INTO adopciones (usuario_id, mascota_id) VALUES (?, ?)';
+            db.query(queryAdoptar, [usuario_id, mascota_id], (err, result) => {
+                if (err) {
+                    console.error('Error en la consulta SQL:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    return res.end(JSON.stringify({ error: 'Error al registrar la adopción' }));
+                }
+
+                const queryActualizarMascota = 'UPDATE mascotas SET estado = "Adoptado" WHERE id = ?';
+                db.query(queryActualizarMascota, [mascota_id], (err, result) => {
+                    if (err) {
+                        console.error('Error en la consulta SQL:', err);
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                        return res.end(JSON.stringify({ error: 'Error al actualizar el estado de la mascota' }));
+                    }
+
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ mensaje: 'Mascota adoptada exitosamente' }));
+                });
+            });
+        } catch (error) {
+            console.error('Error al procesar la solicitud:', error);
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Formato de datos inválido' }));
+        }
+    });
+}
+
+// Ruta para agregar una mascota
+else if (pathname === '/api/mascotas' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk.toString(); });
+    req.on('end', () => {
+        try {
+            const { nombre, especie, raza, edad, descripcion, imagen } = JSON.parse(body);
+
+            if (!nombre || !especie || !raza || !edad || !descripcion || !imagen) {
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                return res.end(JSON.stringify({ error: 'Todos los campos son obligatorios' }));
+            }
+
+            const query = 'INSERT INTO mascotas (nombre, especie, raza, edad, descripcion, imagen, estado) VALUES (?, ?, ?, ?, ?, ?, "Disponible")';
+            db.query(query, [nombre, especie, raza, edad, descripcion, imagen], (err, result) => {
+                if (err) {
+                    console.error('Error en la consulta SQL:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    return res.end(JSON.stringify({ error: 'Error al agregar la mascota' }));
+                }
+
+                res.writeHead(201, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ mensaje: 'Mascota agregada exitosamente' }));
+            });
+        } catch (error) {
+            console.error('Error al procesar la solicitud:', error);
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Formato de datos inválido' }));
+        }
+    });
+}
+
+// Ruta para editar una mascota
+else if (pathname.startsWith('/api/mascotas/') && req.method === 'PUT') {
+    const mascotaId = pathname.split('/')[3];
+    let body = '';
+    req.on('data', chunk => { body += chunk.toString(); });
+    req.on('end', () => {
+        try {
+            const { nombre, especie, raza, edad, descripcion, imagen } = JSON.parse(body);
+
+            if (!nombre || !especie || !raza || !edad || !descripcion) {
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                return res.end(JSON.stringify({ error: 'Todos los campos son obligatorios excepto la imagen' }));
+            }
+
+            let query = 'UPDATE mascotas SET nombre = ?, especie = ?, raza = ?, edad = ?, descripcion = ?';
+            const values = [nombre, especie, raza, edad, descripcion];
+
+            if (imagen) {
+                query += ', imagen = ?';
+                values.push(imagen);
+            }
+
+            query += ' WHERE id = ?';
+            values.push(mascotaId);
+
+            db.query(query, values, (err, result) => {
+                if (err) {
+                    console.error('Error en la consulta SQL:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    return res.end(JSON.stringify({ error: 'Error al actualizar la mascota' }));
+                }
+
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ mensaje: 'Mascota actualizada exitosamente' }));
+            });
+        } catch (error) {
+            console.error('Error al procesar la solicitud:', error);
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Formato de datos inválido' }));
+        }
+    });
+}
+
+// Ruta para eliminar una mascota
+else if (pathname.startsWith('/api/mascotas/') && req.method === 'DELETE') {
+    const mascotaId = pathname.split('/')[3];
+
+    if (!mascotaId) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({ error: 'ID de mascota es obligatorio' }));
+    }
+
+    const query = 'DELETE FROM mascotas WHERE id = ?';
+    db.query(query, [mascotaId], (err, result) => {
+        if (err) {
+            console.error('Error en la consulta SQL:', err);
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            return res.end(JSON.stringify({ error: 'Error al eliminar la mascota' }));
+        }
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ mensaje: 'Mascota eliminada exitosamente' }));
+    });
+}
+
+// Ruta para obtener mascotas adoptadas
+else if (pathname === '/api/mascotas/adoptadas' && req.method === 'GET') {
+    const query = `
+        SELECT m.id, m.nombre, m.especie, m.raza, m.edad, m.descripcion, CAST(m.imagen AS CHAR) AS ImagenBase64, u.nombre AS adoptado_por
+        FROM mascotas m
+        INNER JOIN adopciones a ON m.id = a.mascota_id
+        INNER JOIN usuarios u ON a.usuario_id = u.id
+        WHERE m.estado = "Adoptado"
+    `;
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Error en la consulta SQL:', err);
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            return res.end(JSON.stringify({ error: 'Error al obtener mascotas adoptadas' }));
+        }
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(results));
+    });
+}
 
     else {
         res.writeHead(404, { 'Content-Type': 'application/json' });
